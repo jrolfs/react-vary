@@ -1,0 +1,7 @@
+{
+  "extends": ["tslint:latest", "tslint-react"],
+  "rules": {
+    "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+    "max-classes-per-file": [true, 5, "exclude-class-expressions"],
+  }
+}
