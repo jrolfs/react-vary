@@ -1,0 +1,19 @@
+
+{
+    "presets": [
+        [
+            "env",
+            {
+                "modules": false,
+                "targets": {
+                    "browsers": [
+                        "last 2 versions",
+                        "Explorer >= 10",
+                        "iOS >= 8.3"
+                    ]
+                }
+            }
+        ],
+        "react"
+    ]
+}

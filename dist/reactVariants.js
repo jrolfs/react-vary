@@ -48,6 +48,7 @@ object-assign
 @license MIT
 */
 
+/* eslint-disable no-unused-vars */
 var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
@@ -155,6 +156,17 @@ var emptyObject_1 = emptyObject;
  *
  */
 
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
 var validateFormat = function validateFormat(format) {};
 
 {
@@ -188,6 +200,15 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 var invariant_1 = invariant;
 
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
 function makeEmptyFunction(arg) {
   return function () {
     return arg;
@@ -213,6 +234,13 @@ emptyFunction.thatReturnsArgument = function (arg) {
 };
 
 var emptyFunction_1 = emptyFunction;
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
 
 var warning = emptyFunction_1;
 
@@ -1712,6 +1740,21 @@ var ExecutionEnvironment = {
 
 var ExecutionEnvironment_1 = ExecutionEnvironment;
 
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ */
+
+
+
+/**
+ * Upstream version of event listener. Does not take into account specific
+ * nature of platform.
+ */
 var EventListener = {
   /**
    * Listen to DOM events during the bubble phase.
@@ -1770,6 +1813,27 @@ var EventListener = {
 
 var EventListener_1 = EventListener;
 
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ */
+
+/* eslint-disable fb-www/typeof-undefined */
+
+/**
+ * Same as document.activeElement but wraps in a try-catch block. In IE it is
+ * not safe to call document.activeElement if there is nothing focused.
+ *
+ * The activeElement will be null only if the document or document body is not
+ * yet defined.
+ *
+ * @param {?DOMDocument} doc Defaults to current document.
+ * @return {?DOMElement}
+ */
 function getActiveElement(doc) /*?DOMElement*/{
   doc = doc || (typeof document !== 'undefined' ? document : undefined);
   if (typeof doc === 'undefined') {
@@ -1848,6 +1912,19 @@ function shallowEqual(objA, objB) {
 
 var shallowEqual_1 = shallowEqual;
 
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ */
+
+/**
+ * @param {*} object The object to check.
+ * @return {boolean} Whether or not the object is a DOM node.
+ */
 function isNode(object) {
   var doc = object ? object.ownerDocument || object : document;
   var defaultView = doc.defaultView || window;
@@ -1856,12 +1933,43 @@ function isNode(object) {
 
 var isNode_1 = isNode;
 
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ */
+
+
+
+/**
+ * @param {*} object The object to check.
+ * @return {boolean} Whether or not the object is a DOM text node.
+ */
 function isTextNode(object) {
   return isNode_1(object) && object.nodeType == 3;
 }
 
 var isTextNode_1 = isTextNode;
 
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+
+
+/*eslint-disable no-bitwise */
+
+/**
+ * Checks if a given DOM node contains or is another DOM node.
+ */
 function containsNode(outerNode, innerNode) {
   if (!outerNode || !innerNode) {
     return false;
@@ -1890,6 +1998,10 @@ var containsNode_1 = containsNode;
  *
  */
 
+/**
+ * @param {DOMElement} node input/textarea to focus
+ */
+
 function focusNode(node) {
   // IE8 can throw "Can't move focus to the control because it is invisible,
   // not enabled, or of a type that does not accept the focus." for all kinds of
@@ -1900,6 +2012,15 @@ function focusNode(node) {
 }
 
 var focusNode_1 = focusNode;
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ */
 
 var _uppercasePattern = /([A-Z])/g;
 
@@ -1944,6 +2065,15 @@ function hyphenateStyleName(string) {
 }
 
 var hyphenateStyleName_1 = hyphenateStyleName;
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ */
 
 var _hyphenPattern = /-(.)/g;
 
@@ -17384,134 +17514,112 @@ var reactDom = createCommonjsModule(function (module) {
 
 var reactDom_1 = reactDom.render;
 
-var ComponentWithVariants = /** @class */ (function (_super) {
-    __extends(ComponentWithVariants, _super);
-    function ComponentWithVariants() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return ComponentWithVariants;
-}(react.PureComponent));
-
-// TODO: Make IPropTypes
-// VariantWrapper.propTypes = {
-//   variant: PropTypes.number,
-//   render: PropTypes.func
-// }
-// VariantWrapper.defaultProps = {
-//   variant: null,
-//   render: null
-// }
 var isNull = function (val) { return val === null; };
 var isFunc = function (val) { return typeof val === 'function'; };
 var isObjectLiteral = function (val) { return Object.prototype.toString.call(val) === '[object Object]'; };
 var isEmpty = function (val) { return !Object.keys(val).length; };
-var getName = function (component) { return component.constructor.name; };
-function withVariants(defaultVariant) {
-    console.log('incoming', defaultVariant.variants);
+function WithVariants(defaultVariant) {
     if (!isFunc(defaultVariant)) {
         throw new Error('Must provide initial variant as first argument');
     }
     var variants = defaultVariant.variants;
+    var displayName = defaultVariant.name || defaultVariant.constructor.name;
+    if (!displayName) {
+        throw new Error('Must provide static displayName');
+    }
     if (!isObjectLiteral(variants) || isEmpty(variants)) {
         throw new Error('Must provide variant configuration with at least one variant');
     }
     var variantCount = Object.keys(variants).length;
-    var internalState = { variantCount: variantCount, renderPropCount: 0 };
-    var VariantWrapper = /** @class */ (function (_super) {
+    var internalState = { variantCount: variantCount };
+    return (function (_super) {
         __extends(VariantWrapper, _super);
         function VariantWrapper(props) {
             var _this = _super.call(this, props) || this;
-            _this.variants = __assign({ 0: defaultVariant }, variants);
-            _this.componentName = getName(defaultVariant);
-            /////////////////////////////////////
-            var componentName = _this.componentName;
-            var variant = props.variant, render = props.render;
-            if (isNull(variant) && isNull(render)) {
-                throw new Error('Must provide either variant or render prop to ' + componentName);
+            var variant = props.variant;
+            if (isNull(variant)) {
+                throw new Error('Must provide variant prop to ' + displayName);
             }
-            if (!isNull(variant) && !!render) {
-                throw new Error('Cannot provide both variant and render prop to ' + componentName);
-            }
-            var newProps = __assign({}, props, { componentName: componentName, isDefault: variant === 0 });
-            if (render) {
-                internalState.renderPropCount++;
-                var renderName = componentName + "-renderProp-" + internalState.renderPropCount;
-                newProps.variant = renderName;
-            }
-            else {
-                internalState.variantCount++;
-            }
-            newProps.variantData = __assign({}, internalState);
-            _this.state = newProps;
+            var internalVariants = __assign({ 0: defaultVariant }, variants);
+            var initialState = __assign({ variants: internalVariants }, props, { isDefault: variant === 0, variantCount: internalState.variantCount });
+            internalState.variantCount++;
+            _this.state = initialState;
             return _this;
         }
         VariantWrapper.prototype.render = function () {
-            var _a = this.state, render = _a.render, variant = _a.variant, componentName = _a.componentName;
-            if (render) {
-                return render(this.state);
+            var _a = this.state, variant = _a.variant, variants = _a.variants;
+            var VariantComponent = variants[variant];
+            if (!isFunc(VariantComponent)) {
+                throw new Error("No variant # " + variant + " exists for " + displayName + ", check your config");
             }
-            var VariantPureComponent = this.variants[variant];
-            if (!isFunc(VariantPureComponent)) {
-                throw new Error("No variant # " + variant + " exists for " + componentName + ", check your config");
-            }
-            return react.createElement(VariantPureComponent, __assign({}, this.state));
+            return react.createElement(VariantComponent, __assign({}, this.state));
         };
         return VariantWrapper;
-    }(react.PureComponent));
-    
-    return VariantWrapper;
+    }(react.Component));
 }
 
-var UserProfile1 = /** @class */ (function (_super) {
+var style = {
+    backgroundColor: 'turquoise'
+};
+var UserProfile1 = (function (_super) {
     __extends(UserProfile1, _super);
     function UserProfile1() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserProfile1.prototype.render = function () {
-        var _a = this.props, componentName = _a.componentName, variant = _a.variant, _b = _a.isDefault, isDefault = _b === void 0 ? false : _b;
-        return react.createElement("div", null,
-            "hi ",
-            componentName,
-            " ",
-            variant,
-            " isDefault: ",
-            isDefault.toString());
+        return react.createElement("div", { style: style },
+            "DisplayName: ",
+            this.props.displayName,
+            " Variant: ",
+            this.props.variant);
     };
     return UserProfile1;
-}(react.PureComponent));
-var UserProfile = /** @class */ (function (_super) {
+}(react.Component));
+
+var style$1 = {
+    backgroundColor: 'cornsilk'
+};
+var UserProfile2 = function (props) {
+    return react.createElement("div", { style: style$1 },
+        "DisplayName: ",
+        props.displayName,
+        " Variant: ",
+        props.variant);
+};
+
+var UserProfile = (function (_super) {
     __extends(UserProfile, _super);
     function UserProfile() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserProfile.prototype.render = function () {
-        var _a = this.props, componentName = _a.componentName, variant = _a.variant, _b = _a.isDefault, isDefault = _b === void 0 ? false : _b;
         return react.createElement("div", null,
-            "hi ",
-            componentName,
-            " ",
-            variant,
-            " isDefault: ",
-            isDefault.toString());
+            "DisplayName: ",
+            this.props.displayName,
+            " Variant: ",
+            this.props.variant);
     };
     UserProfile.variants = {
         1: UserProfile1,
+        2: UserProfile2
     };
     return UserProfile;
-}(ComponentWithVariants));
-var UserProfileWithVariants = withVariants(UserProfile);
-var App = /** @class */ (function (_super) {
+}(react.Component));
+var UserProfileWithVariants = WithVariants(UserProfile);
+var App = (function (_super) {
     __extends(App, _super);
     function App() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        return react.createElement(UserProfileWithVariants, { variant: 0 });
+        return (react.createElement("div", null,
+            react.createElement(UserProfileWithVariants, { variant: 0 }),
+            react.createElement(UserProfileWithVariants, { variant: 1 }),
+            react.createElement(UserProfileWithVariants, { variant: 2 })));
     };
     return App;
-}(react.PureComponent));
-console.log('rendering');
+}(react.Component));
 reactDom.render(react.createElement(App, null), document.getElementById('root'));
-//# sourceMappingURL=index.js.map
 
 })));
+//# sourceMappingURL=ReactVariants.js.map

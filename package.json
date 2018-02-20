@@ -1,15 +1,16 @@
 {
   "name": "react-variants",
   "version": "1.0.0",
-  "main": "dist/reactVariants.js",
-  "module": "dist/index.mjs",
-  "jsnext:main": "dist/index.mjs",
+  "main": "dist/ReactVariants.js",
+  "types": "dist/ReactVariants.d.ts",
   "repository": "git@github.com:cmswalker/react-variants.git",
   "author": "Michael Walker <cmichaelswalker@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "prebuild": "rm -rf ./dist",
     "build": "NODE_ENV=production rollup -c",
-    "watch": "NODE_ENV=development rollup -cw"
+    "watch": "NODE_ENV=development rollup -cw",
+    "prepublish": "yarn build"
   },
   "devDependencies": {
     "@types/prop-types": "^15.5.2",
@@ -20,14 +21,13 @@
     "rollup-plugin-node-resolve": "^3.0.2",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-serve": "^0.4.2",
-    "rollup-plugin-typescript": "^0.8.1",
+    "rollup-plugin-typescript2": "^0.11.1",
     "rollup-watch": "^4.3.1",
     "tslint": "^5.9.1",
     "tslint-react": "^3.4.0",
     "typescript": "^2.7.1"
   },
   "dependencies": {
-    "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   }

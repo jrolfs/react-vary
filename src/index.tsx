@@ -1,96 +1,69 @@
+/// <reference path='ext.d.ts'/>
+
 import React from 'react';
 
-import { ComponentWithVariants } from './types';
-
-// TODO: Make IPropTypes
-// VariantWrapper.propTypes = {
-//   variant: PropTypes.number,
-//   render: PropTypes.func
-// }
-// VariantWrapper.defaultProps = {
-//   variant: null,
-//   render: null
-// }
+import { InternalState, IVariantProps, IVariantState, DefaultVariantComponent } from './types';
 
 const isNull = (val: any): boolean => val === null;
 const isFunc = (val: any): boolean => typeof val === 'function';
 const isObjectLiteral = (val: any): boolean => Object.prototype.toString.call(val) === '[object Object]';
 const isEmpty = (val: object): boolean => !Object.keys(val).length;
 
-const getName = (component: React.Component): string => component.constructor.name;
-
-export function withVariants(defaultVariant: ComponentWithVariants) {
-  console.log('incoming', defaultVariant.variants);
+export function WithVariants(defaultVariant: DefaultVariantComponent): React.ComponentClass<IVariantProps> {
   if (!isFunc(defaultVariant)) {
     throw new Error('Must provide initial variant as first argument');
   }
 
   const { variants } = defaultVariant;
+  const displayName = defaultVariant.name || defaultVariant.constructor.name;
+
+  if (!displayName) {
+    throw new Error('Must provide static displayName');
+  }
 
   if (!isObjectLiteral(variants) || isEmpty(variants)) {
     throw new Error('Must provide variant configuration with at least one variant');
   }
 
   const variantCount = Object.keys(variants).length;
-  const internalState = { variantCount, renderPropCount: 0 };
+  const internalState: InternalState = { variantCount };
 
-  class VariantWrapper extends React.PureComponent {
-    constructor(props) {
+  return class VariantWrapper extends React.Component<IVariantProps, IVariantState> {
+    constructor(props: IVariantProps) {
       super(props);
 
-      this.variants = {
+      const { variant } = props;
+
+      if (isNull(variant)) {
+        throw new Error('Must provide variant prop to ' + displayName);
+      }
+
+      const internalVariants = {
         0: defaultVariant,
         ...variants
       };
-      this.componentName = getName(defaultVariant);
 
-      /////////////////////////////////////
-
-      const { componentName } = this;
-      const { variant, render } = props;
-
-      if (isNull(variant) && isNull(render)) {
-        throw new Error('Must provide either variant or render prop to ' + componentName);
-      }
-
-      if (!isNull(variant) && !!render) {
-        throw new Error('Cannot provide both variant and render prop to ' + componentName);
-      }
-
-      const newProps = {
+      const initialState = {
+        variants: internalVariants,
         ...props,
-        componentName,
-        isDefault: variant === 0
+        isDefault: variant === 0,
+        variantCount: internalState.variantCount
       };
 
-      if (render) {
-        internalState.renderPropCount++;
-        const renderName = `${componentName}-renderProp-${internalState.renderPropCount}`;
-        newProps.variant = renderName;
-      } else {
-        internalState.variantCount++;
-      }
+      internalState.variantCount++;
 
-      newProps.variantData = { ...internalState };
-      this.state = newProps;
+      this.state = initialState;
     }
 
     render() {
-      const { render, variant, componentName } = this.state;
+      const { variant, variants } = this.state;
+      const VariantComponent: React.ComponentType<any> = variants[variant];
 
-      if (render) {
-        return render(this.state);
+      if (!isFunc(VariantComponent)) {
+        throw new Error(`No variant # ${variant} exists for ${displayName}, check your config`);
       }
 
-      const VariantPureComponent = this.variants[variant];
-
-      if (!isFunc(VariantPureComponent)) {
-        throw new Error(`No variant # ${variant} exists for ${componentName}, check your config`);
-      }
-
-      return <VariantPureComponent {...this.state} />;
+      return <VariantComponent {...this.state} />;
     }
   };
-
-  return VariantWrapper;
 }

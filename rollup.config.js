@@ -2,22 +2,28 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import serve from 'rollup-plugin-serve'
 import replace from 'rollup-plugin-replace';
-import typescript from 'typescript';
-import typescriptPlugin from 'rollup-plugin-typescript'
+import typescriptPlugin from 'rollup-plugin-typescript2';
 
 const pkg = require('./package.json');
 
-const { NODE_ENV } = process.env;
-console.log('ROLLUP ENV', NODE_ENV);
+const { NODE_ENV, NO_TS } = process.env;
 
-const isDev = NODE_ENV === 'development';
+const isDev = NODE_ENV === 'development' || !NODE_ENV;
 
-let entry = './src/index.tsx';
+let input = './src/index.tsx';
+let external = [
+  'react',
+  'react-dom',
+  'prop-types'
+];
+
+const globals = {
+  'react': 'React',
+  'react-dom': 'ReactDOM'
+};
+
 const plugins = [
-  typescriptPlugin({
-    typescript,
-    importHelpers: true
-  }),
+  typescriptPlugin(),
   replace({
     'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
   }),
@@ -30,45 +36,46 @@ const plugins = [
         // ⚠️   'render' is not exported by 'node_modules/react-dom/index.js'
         // Just add the mentioned file / export here
         'node_modules/react-dom/index.js': [
-            'render',
+            'render'
         ],
         'node_modules/react/react.js': [
+            'React',
             'Component',
             'PropTypes',
-            'createElement',
-        ],
-    },
+            'ComponentClass',
+            'PureComponent',
+            'createElement'
+        ]
+    }
   })
 ];
 
-let external = [
-  'react',
-  'react-dom',
-  'prop-types'
-];
-
 if (isDev) {
-  entry = './example/index.tsx';
-  plugins.push(serve('dist'));
+  input = './example/index.tsx';
+  plugins.push(serve({
+    contentBase: ['dist', 'example']
+  }));
   external = [];
 }
 
 export default {
-  entry,
+  input,
   external,
+  globals,
   plugins,
-  targets: [
+  watch: {
+    clearScreen: true,
+    include: [
+      'src/**',
+      'example/**'
+    ]
+  },
+  output: [
     {
-      dest: pkg.main,
+      file: 'dist/ReactVariants.js',
       format: 'umd',
-      moduleName: 'reactVariants',
-      name: 'reactVariants',
-      sourceMap: true
-    },
-    {
-      dest: pkg.module,
-      format: 'es',
-      sourceMap: true
+      name: 'ReactVariants',
+      sourcemap: true
     }
   ]
-}
+};
