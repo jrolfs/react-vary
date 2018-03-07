@@ -49,3 +49,5 @@ Pass a component to `WithVariants` and get an HOC wrapper back that passes data 
  * @param {Number} variantCount - Total Count of all running variants
  */
 ```
+
+More [Examples](https://github.com/cmswalker/react-vary/tree/master/example)
