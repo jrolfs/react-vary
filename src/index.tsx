@@ -1,5 +1,3 @@
-/// <reference path='ext.d.ts'/>
-
 import React from 'react';
 
 import { InternalState, IVariantProps, IVariantState, DefaultVariantComponent } from './types';

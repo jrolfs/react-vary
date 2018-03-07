@@ -1,4 +1,3 @@
-/// <reference path="ext.d.ts" />
 /// <reference types="react" />
 import React from 'react';
 import { IVariantProps, DefaultVariantComponent } from './types';

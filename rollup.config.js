@@ -72,9 +72,9 @@ export default {
   },
   output: [
     {
-      file: 'dist/ReactVariants.js',
+      file: 'dist/ReactVary.js',
       format: 'umd',
-      name: 'ReactVariants',
+      name: 'ReactVary',
       sourcemap: true
     }
   ]

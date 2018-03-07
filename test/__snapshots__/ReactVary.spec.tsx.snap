@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReactVary adheres to the API 1`] = `
+<div>
+  <div>
+    DisplayName: 
+     Variant: 
+    0
+  </div>
+  <div
+    style={
+      Object {
+        "backgroundColor": "turquoise",
+      }
+    }
+  >
+    DisplayName: 
+     Variant: 
+    1
+  </div>
+  <div
+    style={
+      Object {
+        "backgroundColor": "cornsilk",
+      }
+    }
+  >
+    DisplayName: 
+     Variant: 
+    2
+  </div>
+</div>
+`;

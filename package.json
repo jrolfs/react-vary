@@ -1,21 +1,47 @@
 {
-  "name": "react-variants",
+  "name": "react-vary",
   "version": "1.0.0",
-  "main": "dist/ReactVariants.js",
-  "types": "dist/ReactVariants.d.ts",
-  "repository": "git@github.com:cmswalker/react-variants.git",
+  "description": "Statically declare variants for AB testing react components",
+  "main": "dist/ReactVary.js",
+  "types": "dist/src/index.d.ts",
+  "repository": "git@github.com:cmswalker/react-vary.git",
   "author": "Michael Walker <cmichaelswalker@gmail.com>",
   "license": "MIT",
   "scripts": {
     "prebuild": "rm -rf ./dist",
-    "build": "NODE_ENV=production rollup -c",
+    "build": "NODE_ENV=production rollup -c && npm run removeExample",
     "watch": "NODE_ENV=development rollup -cw",
-    "prepublish": "yarn build"
+    "removeExample": "rm -rf ./dist/example",
+    "prepublish": "yarn build",
+    "test": "jest"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}"
+    ],
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": [
+      "<rootDir>/test/**/?(*.)(spec|test).ts?(x)"
+    ],
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
   },
   "devDependencies": {
+    "@types/jest": "^22.2.0",
     "@types/prop-types": "^15.5.2",
     "@types/react": "^16.0.36",
     "@types/react-dom": "^16.0.3",
+    "jest": "^22.4.2",
+    "react-test-renderer": "^16.2.0",
     "rollup": "^0.55.3",
     "rollup-plugin-commonjs": "^8.3.0",
     "rollup-plugin-node-resolve": "^3.0.2",
@@ -23,6 +49,7 @@
     "rollup-plugin-serve": "^0.4.2",
     "rollup-plugin-typescript2": "^0.11.1",
     "rollup-watch": "^4.3.1",
+    "ts-jest": "^22.4.1",
     "tslint": "^5.9.1",
     "tslint-react": "^3.4.0",
     "typescript": "^2.7.1"
