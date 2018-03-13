@@ -8,7 +8,6 @@
   "author": "Michael Walker <cmichaelswalker@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prebuild": "rm -rf ./dist",
     "build": "NODE_ENV=production rollup -c && npm run removeExample",
     "watch": "NODE_ENV=development rollup -cw",
     "removeExample": "rm -rf ./dist/example",
