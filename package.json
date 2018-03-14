@@ -1,6 +1,6 @@
 {
   "name": "react-vary",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Statically declare variants for AB testing react components",
   "main": "dist/ReactVary.js",
   "types": "dist/src/index.d.ts",
@@ -55,6 +55,5 @@
     "tslint-react": "^3.4.0",
     "typescript": "^2.7.1"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
