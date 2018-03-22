@@ -4,6 +4,7 @@ exports[`ReactVary adheres to the API 1`] = `
 <div>
   <div>
     DisplayName: 
+    UserProfile
      Variant: 
     0
   </div>
@@ -15,6 +16,7 @@ exports[`ReactVary adheres to the API 1`] = `
     }
   >
     DisplayName: 
+    UserProfile
      Variant: 
     1
   </div>
@@ -26,6 +28,7 @@ exports[`ReactVary adheres to the API 1`] = `
     }
   >
     DisplayName: 
+    UserProfile
      Variant: 
     2
   </div>

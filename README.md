@@ -1,4 +1,5 @@
 # react-vary :cat: :smile_cat: :kissing_cat: :heart_eyes_cat: :joy_cat:
+
 ## Statically declare variants for AB testing react components
 
 Similar to the Top-level API of prop-types, its as easy as:
@@ -29,9 +30,13 @@ class App extends React.Component {
       <div>
         {/* Variant 0 is our default UserProfile Component defined above */}
         <UserProfileWithVariants variant={0} />
-
         <UserProfileWithVariants variant={1} />
         <UserProfileWithVariants variant={2} />
+
+        {/* It also supports render props for making variants on the fly! */}
+        <UserProfileWithVariants variant={3} render={({ displayName, variant }) => {
+            return <div>DisplayName: {displayName} Variant: {variant}</div>;
+        }} />
       </div>
     );
   }

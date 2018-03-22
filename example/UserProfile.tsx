@@ -5,7 +5,12 @@ import { WithVariants } from '../src';
 import UserProfile1 from './variants/1';
 import UserProfile2 from './variants/2';
 
-export class UserProfile extends React.Component<IVariantProps> {
+export class UserProfile extends React.Component<IVariantProps, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = { isStatefulComponent: true }
+  }
+
   static variants: IVariants = {
     1: UserProfile1,
     2: UserProfile2

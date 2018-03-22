@@ -15,8 +15,9 @@ export interface IVariantsProps {
 }
 
 export interface IWithVariantProps {
-  variant: number;
-  [x: string]: any
+  variant?: number;
+  render?: Function;
+  [x: string]: any;
 }
 
 export interface IVariantCombined extends IVariantsProps, IWithVariantProps {}

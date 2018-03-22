@@ -5,13 +5,14 @@ import UserProfileWithVariants from './UserProfile';
 
 class App extends React.Component {
   render() {
-    return (
-      <div>
+    return <div>
         <UserProfileWithVariants variant={0} />
         <UserProfileWithVariants variant={1} />
         <UserProfileWithVariants variant={2} />
-      </div>
-    );
+        <UserProfileWithVariants variant={3} render={({ displayName, variant }: { displayName: string, variant: number }) => {
+            return <div>DisplayName: {displayName} Variant: {variant}</div>;
+        }} />
+      </div>;
   }
 }
 
