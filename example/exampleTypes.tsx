@@ -1,5 +1,5 @@
 import { IVariants, IVariantProps } from '../src/types';
 
-export interface UserProfileProps extends IVariantProps {
-  time: number;
+export interface ExampleComponentProps extends IVariantProps {
+  time: string;
 };

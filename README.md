@@ -1,6 +1,6 @@
 # react-vary :cat: :smile_cat: :kissing_cat: :heart_eyes_cat: :joy_cat:
 
-## Statically declare variants for AB testing react components
+## Statically and Dynamically declare variants for AB testing react components
 
 Similar to the Top-level API of prop-types, its as easy as:
 

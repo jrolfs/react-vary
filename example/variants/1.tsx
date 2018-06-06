@@ -1,18 +1,17 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 
-import { UserProfileProps } from '../exampleTypes';
+import { ExampleComponentProps } from '../exampleTypes';
 
 const style = {
   backgroundColor: 'turquoise'
 };
 
-class UserProfile1 extends React.Component<UserProfileProps> {
+class ExampleComponent1 extends React.Component<ExampleComponentProps> {
   render() {
-    console.log('number 1 props', this.props);
-    const { displayName, variant, time } = this.props;
-    return <div style={style}>DisplayName: {displayName} Variant: {variant} Time: {time}</div>
+    const { displayName, variant, time, variantRenderCount } = this.props;
+    return <div style={style}>DisplayName: {displayName} Variant: {variant} Time: {time} Variant Render Count: {variantRenderCount}</div>
   }
 }
 
-export default UserProfile1;
+export default ExampleComponent1;

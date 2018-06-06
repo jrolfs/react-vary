@@ -1,7 +1,7 @@
 {
   "name": "react-vary",
   "version": "1.0.4",
-  "description": "Statically declare variants for AB testing react components",
+  "description": "Statically and Dynamically declare variants for AB testing react components",
   "main": "dist/ReactVary.js",
   "types": "dist/src/index.d.ts",
   "repository": {
