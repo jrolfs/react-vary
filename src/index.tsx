@@ -32,8 +32,6 @@ export function WithRenderProps(DefaultVariant: React.ComponentType): React.Comp
       if (isDefault) {
         totalRenderCount++;
         const newProps = { ...topProps, variantCount, isDefault, totalRenderCount, isRenderProp, displayName };
-
-        // @ts-ignore
         return <DefaultVariant {...newProps}  />
       }
 

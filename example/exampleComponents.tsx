@@ -6,7 +6,6 @@ import { ExampleComponentProps } from './exampleTypes';
 export class ExampleComponent extends React.Component<ExampleComponentProps, any> {
   constructor(props: any) {
     super(props);
-    this.state = { isStatefulComponent: true }
   }
 
   static variants: IVariants = { };
