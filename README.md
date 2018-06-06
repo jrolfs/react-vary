@@ -52,14 +52,15 @@ By passing a component to `WithVariants` you get an HOC wrapper back that passes
 
 ```js
 /**
+ * @param {...Object} state - Any changes to state will be passed through
  * @param {...Object} props - The original user-defined Props will be passed through
- * @param {Number} variant - The assigned variant number
- * @param {Object} variants - Reference to all known variants
- * @param {Boolean} isDefault - True if the variant is variant 0
- * @param {Boolean} isRenderProp - True if the variant is a render prop
- * @param {Boolean} isStaticVariant - True if the variant is a static variant
- * @param {Number} staticVariantCount - Total Count of all running static variants
- * @param {Number} variantRenderCount - Total number of times the variant has rendered
+ * @param {Number} props.variant - The assigned variant number
+ * @param {Object} props.variants - Reference to all known variants
+ * @param {Boolean} props.isDefault - True if the variant is variant 0
+ * @param {Boolean} props.isRenderProp - True if the variant is a render prop
+ * @param {Boolean} props.isStaticVariant - True if the variant is a static variant
+ * @param {Number} props.staticVariantCount - Total Count of all running static variants
+ * @param {Number} props.variantRenderCount - Total number of times the variant has rendered
  */
 ```
 
@@ -68,8 +69,10 @@ By passing a component to `WithVariants` you get an HOC wrapper back that passes
 This method also returns an HOC wrapper but is for scenarios where you'd like the default component to call it's render() function, but all other variants are components with render props that will override the default render() call. Useful for when you want to keep component state in the default variant while only changing the render abilities of your variants.
 
 ```js
+import { WithRenderProps } from 'react-vary';
+
 class MyStatefulComponent extends React.Component {
-  constructor(props: any) {
+  constructor(props) {
     super(props);
     this.state = {
       date: new Date()
@@ -93,11 +96,11 @@ class MyStatefulComponent extends React.Component {
 
   render() {
     const { date } = this.state;
-    return <div style={{ backgroundColor: 'cornflowerblue' }}>Today's Date: {date}</div>;
+    return <div>Original Render Date: {date}</div>
   }
 }
 
-const MyStatefulComponentWithRenderProps: React.ComponentType<any> = WithRenderProps(MyStatefulComponent);
+const MyStatefulComponentWithRenderProps = WithRenderProps(MyStatefulComponent);
 
 class App extends React.Component {
   render() {
@@ -106,10 +109,14 @@ class App extends React.Component {
         {/* Variant 0 is our default Component defined above */}
         <MyStatefulComponentWithRenderProps variant={0} />
 
-        {/* Here we get all the state updates but with a custom render override. All without touching our original component! */}
-        <MyStatefulComponentWithRenderProps variant={1} render={({props, state}) => {
-          return <div style={{ backgroundColor: 'pink' }}> Today's Date: {date}</div>;
-        }}/>
+        {/*
+          Here we get all the state updates but with a custom render override.
+          All without touching our original component!
+        */}
+        <MyStatefulComponentWithRenderProps
+          variant={1}
+          render={({ props, state }) => <div>Date Override: {state.date}</div>}
+        />
       </div>
     );
   }
@@ -123,10 +130,10 @@ By passing a component to `WithRenderProps` you get an HOC wrapper back that pas
  * @param {...Object} state - Current state that will change based on the behaviour of the default variant
  * @param {...Object} props - The original user-defined Props will be passed through
  * @param {Number} props.variant - The assigned variant number
- * @param {Number} variantCount - Total Count of all running  variants
+ * @param {Number} props.variantCount - Total Count of all running  variants
  * @param {Boolean} props.isDefault - True if the variant is variant 0
  * @param {Boolean} props.isRenderProp - True if the variant is a render prop
- * @param {Number} totalRenderCount - Total number of times all variants have rendered
+ * @param {Number} props.totalRenderCount - Total number of times all variants have rendered
  */
 ```
 
