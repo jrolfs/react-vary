@@ -1,26 +1,24 @@
 import React from 'react';
 
-import { IVariants, IVariantProps, IWithVariantProps } from '../src/types';
-import { WithVariants } from '../src';
-import UserProfile1 from './variants/1';
-import UserProfile2 from './variants/2';
+import { IVariants } from '../src/types';
+import { UserProfileProps } from './exampleTypes';
 
-export class UserProfile extends React.Component<IVariantProps, any> {
+const style = {
+  backgroundColor: 'coral'
+};
+
+export class UserProfile extends React.Component<UserProfileProps, any> {
   constructor(props: any) {
     super(props);
     this.state = { isStatefulComponent: true }
   }
 
-  static variants: IVariants = {
-    1: UserProfile1,
-    2: UserProfile2
-  };
+  static variants: IVariants = { };
 
   public render() {
-    return <div>DisplayName: {this.props.displayName} Variant: {this.props.variant}</div>
+    const { displayName, variant, time } = this.props;
+    return <div style={style}>This is the default Variant. DisplayName: {displayName} Variant: {variant} Time: {time}</div>
   }
 }
 
-const UserProfileWithVariants: React.ComponentType<IWithVariantProps> = WithVariants(UserProfile);
-
-export default UserProfileWithVariants;
+export default UserProfile;

@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 
-import { IVariantProps } from '../../src/types';
+import { UserProfileProps } from '../exampleTypes';
 
 const style = {
   backgroundColor: 'turquoise'
 };
 
-class UserProfile1 extends React.Component<IVariantProps> {
+class UserProfile1 extends React.Component<UserProfileProps> {
   render() {
-    return <div style={style}>DisplayName: {this.props.displayName} Variant: {this.props.variant}</div>
+    console.log('number 1 props', this.props);
+    const { displayName, variant, time } = this.props;
+    return <div style={style}>DisplayName: {displayName} Variant: {variant} Time: {time}</div>
   }
 }
 

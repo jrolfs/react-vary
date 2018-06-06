@@ -39,37 +39,44 @@ export function WithVariants(defaultVariant: DefaultVariantComponent): React.Com
       }
 
       const internalVariants = {
-        0: defaultVariant,
-        ...variants
+        ...variants,
+        0: defaultVariant
       };
 
       const initialState = {
+        ...props,
         displayName,
         variants: internalVariants,
-        ...props,
         isDefault: variant === 0,
-        variantCount: internalState.variantCount
+        variantCount: internalState.variantCount,
+        renderCount: 0
       };
 
       this.state = initialState;
     }
 
+    componentWillReceiveProps() {
+      this.setState({
+        renderCount: this.state.renderCount + 1
+      });
+    }
+
     render() {
-      const { state } = this;
+      const { state, props } = this;
       const { variant, variants } = state;
+      const combinedProps = { ...state, ...props };
 
       if (isFunc(this.props.render)) {
-        renderCount++;
-        return this.props.render({ ...this.state, renderVariant: renderCount });
+        return this.props.render(combinedProps);
       }
 
-      const VariantComponent: React.ComponentType<any> = variants[variant];
+      const VariantComponent: React.ComponentType<any> = variants[variant] || variants[0];
 
       if (!isFunc(VariantComponent)) {
         throw new Error(`No variant # ${variant} exists for ${displayName}, check your config`);
       }
 
-      return <VariantComponent {...state} />;
+      return <VariantComponent {...combinedProps} />;
     }
   };
 }
