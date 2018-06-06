@@ -7,6 +7,55 @@ const isUndefined = (val: any): boolean => val === undefined;
 const isFunc = (val: any): boolean => typeof val === 'function';
 const isObjectLiteral = (val: any): boolean => Object.prototype.toString.call(val) === '[object Object]';
 const isEmpty = (val: object): boolean => !Object.keys(val).length;
+const getDisplayName = (comp : Function): string => comp.name || comp.constructor.name;
+const generateRenderName = (name : string, displayName: string) : string => name || `${displayName}AsRenderProp`;
+const withRenderError = (displayName: string, msg: string): Error => new Error(`Error in WithRenderProps(${displayName}): ${msg}`);
+const withVariantsError = (displayName : string, msg: string) : Error => new Error(`Error in WithVariants(${displayName}): ${msg}`);
+
+export function WithRenderProps(DefaultVariant: React.ComponentType): React.ComponentClass<any> {
+  const displayName = getDisplayName(DefaultVariant);
+  let totalRenderCount = 0;
+  let variantCount = 0;
+
+  return class RenderWrapper extends React.Component<any, any> {
+    constructor(props: any) {
+      super(props);
+      variantCount++;
+    }
+
+    render() {
+      const topProps = this.props;
+      const { render: topRender, variant } = topProps;
+      const isRenderProp = isFunc(topRender);
+      const isDefault = !variant;
+
+      if (isDefault) {
+        totalRenderCount++;
+        const newProps = { ...topProps, variantCount, isDefault, totalRenderCount, isRenderProp, displayName };
+        return <DefaultVariant {...newProps}  />
+      }
+
+      if (isRenderProp) {
+        // @ts-ignore
+        class RenderProp extends DefaultVariant<any, any> {
+          render() {
+            totalRenderCount++;
+
+            const newProps = { ...topProps, variantCount, isDefault, totalRenderCount, isRenderProp, displayName };
+            // @ts-ignore
+            this.props = newProps;
+            return topRender(this);
+          }
+        }
+
+        // @ts-ignore
+        return <RenderProp {...topProps} />
+      }
+
+      throw withRenderError(displayName, 'Could not find render definition or variant');
+    }
+  }
+}
 
 export function WithVariants(defaultVariant: DefaultVariantComponent): React.ComponentClass<IVariantProps> {
   if (!isFunc(defaultVariant)) {
@@ -14,19 +63,17 @@ export function WithVariants(defaultVariant: DefaultVariantComponent): React.Com
   }
 
   const { variants } = defaultVariant;
-  const displayName = defaultVariant.name || defaultVariant.constructor.name;
+  variants[0] = defaultVariant;
 
-  if (!displayName) {
-    throw new Error('Must provide static displayName');
-  }
+  const displayName = getDisplayName(defaultVariant);
 
   if (!isObjectLiteral(variants) || isEmpty(variants)) {
-    throw new Error('Must provide variant configuration with at least one variant');
+    throw withVariantsError(displayName, 'Must provide variant configuration with at least one variant');
   }
 
-  const variantCount = Object.keys(variants).length + 1;
-  const internalState: InternalState = { variantCount };
-  let renderCount = -1;
+  // static variants count only
+  let staticVariantCount = Object.keys(variants).length;
+  let totalRenderCount = staticVariantCount;
 
   return class VariantWrapper extends React.Component<IVariantProps, IVariantState> {
     constructor(props: IVariantProps) {
@@ -35,41 +82,60 @@ export function WithVariants(defaultVariant: DefaultVariantComponent): React.Com
       const { variant } = props;
 
       if (isNull(variant) || isUndefined(variant) || isNaN(variant)) {
-        throw new Error('Must provide variant prop to ' + displayName);
+        throw withVariantsError(displayName, `Must provide variant prop to ${displayName}`);
       }
 
-      const internalVariants = {
-        0: defaultVariant,
-        ...variants
-      };
+      const isRenderProp = isFunc(props.render);
+      const isStaticVariant = !!variants[variant];
 
       const initialState = {
-        displayName,
-        variants: internalVariants,
         ...props,
+        isRenderProp,
+        isStaticVariant,
+        displayName,
+        variants: { ...variants },
         isDefault: variant === 0,
-        variantCount: internalState.variantCount
+        staticVariantCount,
+        variantRenderCount: 1,
+        totalRenderCount: 0
       };
 
       this.state = initialState;
     }
 
-    render() {
-      const { state } = this;
-      const { variant, variants } = state;
+    componentWillReceiveProps() {
+      totalRenderCount++;
 
-      if (isFunc(this.props.render)) {
-        renderCount++;
-        return this.props.render({ ...this.state, renderVariant: renderCount });
+      this.setState({
+        totalRenderCount,
+        variantRenderCount: this.state.variantRenderCount + 1
+      });
+    }
+
+    render() {
+      const { state, props } = this;
+      const { variant, variants, isRenderProp } = state;
+
+      const VariantComponent : React.ComponentType<any> = variants[variant];
+      let name: string|undefined = VariantComponent && getDisplayName(VariantComponent);
+
+      if (isRenderProp) {
+        name = generateRenderName(name, displayName);
       }
 
-      const VariantComponent: React.ComponentType<any> = variants[variant];
+      const combinedProps = { ...state, ...props, displayName: name };
+
+      if (isRenderProp) {
+        // @ts-ignore
+        combinedProps.totalRenderCount = combinedProps.totalRenderCount + 1;
+        return props.render(combinedProps);
+      }
 
       if (!isFunc(VariantComponent)) {
-        throw new Error(`No variant # ${variant} exists for ${displayName}, check your config`);
+        throw withVariantsError(displayName, `No variant # ${variant} exists for ${name}, check your config`);
       }
 
-      return <VariantComponent {...state} />;
+      return <VariantComponent {...combinedProps} />;
     }
   };
 }

@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 
-import { IVariantProps } from '../../src/types';
+import { ExampleComponentProps } from '../exampleTypes';
 
 const style = {
   backgroundColor: 'cornsilk'
 };
 
-const UserProfile2: React.SFC<IVariantProps> = (props) => {
-  return <div style={style}>DisplayName: {props.displayName} Variant: {props.variant}</div>
+const ExampleComponent2: React.SFC<ExampleComponentProps> = ({ displayName, variant, time, variantRenderCount}) => {
+  return <div style={style}>DisplayName: {displayName} Variant: {variant} Time: {time} Variant Render Count: {variantRenderCount}</div>
 };
 
-export default UserProfile2;
+export default ExampleComponent2;

@@ -1,11 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ReactVary adheres to the API 1`] = `
+exports[`WithRenderProps 1`] = `
 <div>
-  <div>
+  <div
+    style={
+      Object {
+        "backgroundColor": "cornflowerblue",
+      }
+    }
+  >
+    Today's Date: 
+    5/2 4:20
+  </div>
+  <div />
+</div>
+`;
+
+exports[`WithVariants 1`] = `
+<div>
+  <div
+    style={
+      Object {
+        "backgroundColor": "coral",
+      }
+    }
+  >
     DisplayName: 
-    UserProfile
+    ExampleComponent
      Variant: 
+    0
+     Time: 
+    20
+     Variant Render Count: 
+    1
+     All Variants Render Count: 
     0
   </div>
   <div
@@ -16,8 +44,12 @@ exports[`ReactVary adheres to the API 1`] = `
     }
   >
     DisplayName: 
-    UserProfile
+    ExampleComponent1
      Variant: 
+    1
+     Time: 
+    20
+     Variant Render Count: 
     1
   </div>
   <div
@@ -28,9 +60,14 @@ exports[`ReactVary adheres to the API 1`] = `
     }
   >
     DisplayName: 
-    UserProfile
+    ExampleComponent2
      Variant: 
     2
+     Time: 
+    20
+     Variant Render Count: 
+    1
   </div>
+  <div />
 </div>
 `;
